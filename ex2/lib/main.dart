@@ -1,23 +1,76 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(
+    MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.blue,
-          title: const Text("Favorite cards"),
+          backgroundColor: Colors.blue, 
+          title: const Text("Favorite cards")
         ),
         body: Column(
           children: [
-            Container(
-                // YOUR CODE
-            ) 
+            FavoriteCard(initialFavorite: true),
+            FavoriteCard(initialFavorite: false),
+            FavoriteCard(initialFavorite: true),
           ],
         ),
       ),
-    )
+    ),
   );
+}
+
+class FavoriteCard extends StatefulWidget {
+  const FavoriteCard({super.key, required this.initialFavorite});
+
+  final bool initialFavorite;
+
+  @override
+  State<FavoriteCard> createState() => _FavoriteCardState();
+}
+
+class _FavoriteCardState extends State<FavoriteCard> {
+  late bool _isFavorite = widget.initialFavorite;
+
+  void _toggleFavorite() {
+    setState(() {
+      _isFavorite = !_isFavorite;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(width: .5, color: Colors.grey)),
+      ),
+      padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          const Expanded(
+            flex: 7,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'title',
+                  style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w800),
+                ),
+                SizedBox(height: 10.0),
+                Text('description'),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: _toggleFavorite,
+            icon: Icon(Icons.favorite, color: _isFavorite ? Colors.red : Colors.grey),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -121,18 +174,11 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: .center,
           children: [
             const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            Text('$_counter', style: Theme.of(context).textTheme.headlineMedium),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: FloatingActionButton(onPressed: _incrementCounter, tooltip: 'Increment', child: const Icon(Icons.add)),
     );
   }
 }

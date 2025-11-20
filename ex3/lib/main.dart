@@ -1,41 +1,72 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
-      debugShowCheckedModeBanner: false, // Why this line ? Can you explain it ?
-      home: Scaffold(
-        backgroundColor: Colors.green[50],
-        appBar: AppBar(
-          backgroundColor: Colors.green[400],
-          title: const Text('Image viewer'),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.navigate_before),
-              tooltip: 'Go to the previous image',
-              onPressed: () => {},
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 50, 0),
-              child: IconButton(
-                icon: const Icon(Icons.navigate_next),
-                tooltip: 'Go to the next image',
-                onPressed: () => {},
-              ),
-            ),
-          ],
-        ),
-        body: Image.asset(images[0]),
-      ),
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false, 
+      home: const ImageViewerScreen()
     )
   );
 }
 
+class ImageViewerScreen extends StatefulWidget {
+  const ImageViewerScreen({super.key});
+
+  @override
+  State<ImageViewerScreen> createState() => _ImageViewerScreenState();
+}
+
+class _ImageViewerScreenState extends State<ImageViewerScreen> {
+  int _currentIndex = 0;
+
+  void _goToPreviousImage() {
+    setState(() {
+      _currentIndex = (_currentIndex - 1 + images.length) % images.length;
+    });
+  }
+
+  void _goToNextImage() {
+    setState(() {
+      _currentIndex = (_currentIndex + 1) % images.length;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.green[50],
+      appBar: AppBar(
+        backgroundColor: Colors.green[400],
+        title: const Text('Image viewer'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.navigate_before), 
+            tooltip: 'Go to the previous image', 
+            onPressed: _goToPreviousImage
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 50),
+            child: IconButton(
+              icon: const Icon(Icons.navigate_next), 
+              tooltip: 'Go to the next image', 
+              onPressed: _goToNextImage
+            ),
+          ),
+        ],
+      ),
+      body: Center(
+        child: Image.asset(images[_currentIndex]),
+      ),
+    );
+  }
+}
+
 List<String> images = [
-  "assets/w4-s2/bird.jpg",
-  "assets/w4-s2/bird2.jpg",
-  "assets/w4-s2/insect.jpg",
-  "assets/w4-s2/girl.jpg",
-  "assets/w4-s2/man.jpg",
+  "bird.jpg", 
+  "bird2.jpg", 
+  "insect.jpg", 
+  "girl.jpg", 
+  "man.jpg"
 ];
 
 class MyApp extends StatelessWidget {
@@ -139,18 +170,11 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: .center,
           children: [
             const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            Text('$_counter', style: Theme.of(context).textTheme.headlineMedium),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: FloatingActionButton(onPressed: _incrementCounter, tooltip: 'Increment', child: const Icon(Icons.add)),
     );
   }
 }

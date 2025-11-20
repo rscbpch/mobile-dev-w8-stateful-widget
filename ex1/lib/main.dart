@@ -1,24 +1,60 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(
+    MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.blue,
-          title: const Text("Favorite cards"),
+          backgroundColor: Colors.blue, 
+          title: const Text("Favorite cards")
         ),
-        body: Column(
-          children: [
-            Container(
-                // YOUR CODE
-            ) 
-          ],
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              FavButton(),
+              FavButton()
+            ],
+          ),
         ),
       ),
-    )
+    ),
   );
+}
 
+class FavButton extends StatefulWidget {
+  const FavButton({super.key});
+
+  @override
+  State<FavButton> createState() => _FavButtonState();
+}
+
+class _FavButtonState extends State<FavButton> {
+  bool _isSelected = false;
+
+  String get _label => _isSelected ? 'Selected' : 'Not selected';
+  Color get _textColor => _isSelected ? Colors.white : Colors.black;
+  Color get _backgroundColor => _isSelected ? Colors.blue.shade500 : Colors.blue.shade50;
+
+  void _toggleSelected() {
+    setState(() {
+      _isSelected = !_isSelected;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 400,
+      height: 100,
+      child: ElevatedButton(
+        onPressed: _toggleSelected,
+        style: ElevatedButton.styleFrom(backgroundColor: _backgroundColor, foregroundColor: _textColor),
+        child: Center(child: Text(_label)),
+      ),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -122,18 +158,11 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: .center,
           children: [
             const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            Text('$_counter', style: Theme.of(context).textTheme.headlineMedium),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: FloatingActionButton(onPressed: _incrementCounter, tooltip: 'Increment', child: const Icon(Icons.add)),
     );
   }
 }
